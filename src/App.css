@@ -63,7 +63,7 @@ html {
   top: 0;
   right: 0;
   height: 100vh;
-  width: 45vw;
+  width: 40vw;
   background-color: #fff;
   z-index: 1500;
   transition: transform 0.3s ease-in-out;
@@ -91,3 +91,4 @@ html {
 .no-scroll {
   overflow: hidden;
 }
+

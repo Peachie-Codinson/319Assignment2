@@ -59,7 +59,7 @@ const FilterBar = ({ filterProducts }) => {
         {filterTitles.map((title, index) => (
           <React.Fragment key={index}>
             {index !== 0 && <div className="vr vr-blurry"/>}
-            <button type="button" className="btn btn-sm btn-outline-light border-0 px-2 mx-1 my-1 flex-grow-1" onClick={() => handleClick(title.toLowerCase())}>
+            <button type="button" className="btn btn-outline-light border-0 px-2 mx-1 my-1 flex-grow-1" onClick={() => handleClick(title.toLowerCase())}>
               {title}
             </button>
           </React.Fragment>
@@ -103,7 +103,7 @@ const ProductCard = ({ product }) => {
 
 
   return (
-    <div className="col-md-4 mb-4"> {/* Adjust card width for medium devices */}
+    <div className="col-sm-6 col-md-4 col-lg-3 mb-4"> 
       <div className="card h-100 rounded-0 d-flex flex-column"> {/* Set fixed height for the card, reduce corner radius, and use flexbox to align elements */}
         <img src={product.image} className="card-img-top" alt="Product Image" style={{ maxHeight: "200px", objectFit: "contain", minHeight: "150px" }} />
 
@@ -112,18 +112,19 @@ const ProductCard = ({ product }) => {
           <p className="card-text" style={{ fontSize: "16px", lineHeight: "1.5", maxHeight: "3em", overflow: "hidden" }}>{product.description}</p>
 
           <div className="mt-auto d-flex flex-wrap justify-content-between align-items-center "> {/* Align items at the bottom */}
-            <div style={{ padding: "5px" }}>
+            <div>
               <p className="card-text" style={{ fontSize: "24px", fontWeight: "bold", marginBottom: "3px", whiteSpace: "nowrap" }}>Price: ${product.price}</p> {/* Increase font size of price and prevent wrapping */}
               <p className="card-text mb-0" style={{ fontSize: "16px" }}>Rating: {generateStarIcons(product.rating.rate)} ({product.rating.count})</p> {/* Generate star icons for rating */}
             </div>
 
-            <div style={{ padding: "5px" }}>
+            <div>
               <div className="d-flex">
                 {cartItems > 0 ? (
                   <div className="btn-group" role="group" aria-label="Add to Cart">
-                    <button type="button" className="btn btn-secondary btn-lg" onClick={handleSubtract}>-</button>
-                    <span className="text-center d-flex align-items-center justify-content-center border px-3" style={{ height: "100%" }}>{cartItems}</span>
                     <button type="button" className="btn btn-secondary btn-lg" onClick={handleAdd}>+</button>
+                    <span className="text-center d-flex align-items-center justify-content-center border px-3" style={{ height: "100%" }}>{cartItems}</span>                    
+                    <button type="button" className="btn btn-secondary btn-lg" onClick={handleSubtract}>-</button>
+                    
                   </div>
                 ) : (
                   <a className="btn btn-primary btn-lg text-dark" onClick={handleAdd} style={{ backgroundColor: "#ff9900", borderColor: "#ff9900", padding: "0.5rem 1rem" }}>Add to cart</a>

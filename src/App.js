@@ -6,7 +6,7 @@ import logo2 from './logo.png';
 import productData from './products.json';
 
 
-const Header = ({ onSearch, clearCart, toggleSidebar, isSidebarOpen, toggleCheckoutForm }) => {
+const Header = ({ onSearch, clearCart, toggleSidebar, showSidebar, toggleCheckoutForm }) => {
   const handleSearch = (event) => {
     if (event.key === 'Enter' || event.type === 'click') {
       const searchInput = event.target.closest('.input-group').querySelector('input').value;
@@ -42,7 +42,7 @@ const Header = ({ onSearch, clearCart, toggleSidebar, isSidebarOpen, toggleCheck
             <button type="button" className="btn btn-outline-light me-2 btn-lg border-1" onClick={clearCart}>
               Clear Cart
             </button>
-            <button type="button" className="btn btn-outline-light me-2 btn-lg border-0" onClick={toggleSidebar} disabled={isSidebarOpen}>
+            <button type="button" className="btn btn-outline-light me-2 btn-lg border-0" onClick={toggleSidebar} disabled={showSidebar}>
               <i className="bi bi-cart"></i>
             </button>
           </div>
@@ -277,7 +277,7 @@ const App = () => {
 
   const [filteredProducts, setFilteredProducts] = useState(productData);
   const [cartItems, setCartItems] = useState({});
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [showSidebar, setShowSidebar] = useState(false);
   const [showCheckoutForm, setShowCheckoutForm] = useState(false);
 
 
@@ -341,8 +341,8 @@ const App = () => {
 
 
   const toggleSidebar = () => {
-    setIsSidebarOpen(!isSidebarOpen);
-    if (isSidebarOpen) {
+    setShowSidebar(!showSidebar);
+    if (showSidebar) {
       document.body.classList.remove('no-scroll');
     } else {
       document.body.classList.add('no-scroll');
@@ -368,7 +368,7 @@ const App = () => {
       <FilterBar filterProducts={filterProducts} />
 
       <Sidebar
-        isOpen={isSidebarOpen}
+        isOpen={showSidebar}
         toggleSidebar={toggleSidebar}
         cartItems={cartItems}
         handleAdd={handleAdd}

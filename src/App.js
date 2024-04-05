@@ -6,7 +6,7 @@ import logo2 from './logo.png';
 import productData from './products.json';
 
 
-const Header = ({ onSearch, clearCart, toggleSidebar, isSidebarOpen }) => {
+const Header = ({ onSearch, clearCart, toggleSidebar, isSidebarOpen, toggleCheckoutForm }) => {
   const handleSearch = (event) => {
     if (event.key === 'Enter' || event.type === 'click') {
       const searchInput = event.target.closest('.input-group').querySelector('input').value;
@@ -34,6 +34,9 @@ const Header = ({ onSearch, clearCart, toggleSidebar, isSidebarOpen }) => {
                 <i className="bi bi-search"></i>
               </button>
             </div>
+            <button type="button" className="btn btn-outline-light ms-4 btn-lg border-1" onClick={toggleCheckoutForm}>
+              Checkout
+            </button>
           </div>
           <div className="text-end">
             <button type="button" className="btn btn-outline-light me-2 btn-lg border-1" onClick={clearCart}>
@@ -66,28 +69,28 @@ const CartItemCard = ({ productId, product, cartItems, handleAdd, handleSubtract
               <h5 className="card-title">{product.title}</h5>
               <h5 className="card-title mt-4">Price: ${product.price}</h5>
             </div>
-            
+
           </div>
 
           <div className='col-md-3'>
             <div className='d-flex flex-column'>
-            <div className="d-flex align-items-end flex-column mt-4 me-3">
-              <div className="btn-group " role="group">
-                <button type="button" className="btn btn-secondary btn-md" onClick={() => handleAdd(productId)}>+</button>
-                <div className="container col-md-5 d-flex align-items-center justify-content-center border">
-                  <span className="text-center align-self-center">{cartItems[productId]}</span>
+              <div className="d-flex align-items-end flex-column mt-4 me-3">
+                <div className="btn-group " role="group">
+                  <button type="button" className="btn btn-secondary btn-md" onClick={() => handleAdd(productId)}>+</button>
+                  <div className="container col-md-5 d-flex align-items-center justify-content-center border">
+                    <span className="text-center align-self-center">{cartItems[productId]}</span>
+                  </div>
+                  <button type="button" className="btn btn-secondary btn-md" onClick={() => handleSubtract(productId)}>-</button>
                 </div>
-                <button type="button" className="btn btn-secondary btn-md" onClick={() => handleSubtract(productId)}>-</button>
+              </div>
+              <div className="mt-4 mb-2 me-2 align-self-end">
+                <button type="button" className=" btn btn-secondary btn-md" onClick={() => handleDelete(productId)}>
+                  <i className="bi bi-trash"></i>
+                </button>
+
               </div>
             </div>
-            <div className="mt-4 mb-2 me-2 align-self-end">
-            <button type="button" className=" btn btn-secondary btn-md" onClick={() => handleDelete(productId)}>
-              <i className="bi bi-trash"></i>
-            </button>
 
-            </div>
-            </div>
-            
           </div>
         </div>
       </div>
@@ -96,7 +99,7 @@ const CartItemCard = ({ productId, product, cartItems, handleAdd, handleSubtract
 };
 
 //temporary cart view
-const Sidebar = ({ isOpen, toggleSidebar, cartItems, handleAdd, handleSubtract, handleDelete, calculateTotal }) => {
+const Sidebar = ({ isOpen, toggleSidebar, cartItems, handleAdd, handleSubtract, handleDelete, calculateTotal, toggleCheckoutForm }) => {
   return (
     <>
       {isOpen && <div className="overlay"></div>}
@@ -132,7 +135,7 @@ const Sidebar = ({ isOpen, toggleSidebar, cartItems, handleAdd, handleSubtract, 
                     cartItems={cartItems}
                     handleAdd={handleAdd}
                     handleSubtract={handleSubtract}
-                    handleDelete = {handleDelete}
+                    handleDelete={handleDelete}
                   />
                 );
               } else {
@@ -143,14 +146,14 @@ const Sidebar = ({ isOpen, toggleSidebar, cartItems, handleAdd, handleSubtract, 
 
           <hr className="mt-auto hr hr-blurry  bg-dark m-0" />
           <div className='d-flex flex-row justify-content-between mt-2 mb-3'>
-              <h3 className="card-title ">Subtotal:</h3>
-              <h3 className="card-title me-2">${calculateTotal()}</h3>
+            <h3 className="card-title ">Subtotal:</h3>
+            <h3 className="card-title me-2">${calculateTotal()}</h3>
           </div>
-          
+
           <hr className="hr hr-blurry  bg-dark m-0 mb-3" />
           <div className="mb-3 d-flex  justify-content-center">
-            <button className="btn btn-primary btn-lg checkout-btn w-100 text-dark" style={{ backgroundColor: "#ff9900", borderColor: "#ff9900" }}>Proceed to Payment & Checkout</button>
-          </div>
+            <button className="btn btn-primary btn-lg checkout-btn w-100 text-dark" style={{ backgroundColor: "#ff9900", borderColor: "#ff9900" }} onClick={toggleCheckoutForm}>Proceed to Payment & Checkout</button> </div>
+
 
         </div>
       </div>
@@ -252,11 +255,31 @@ const ProductCardBody = ({ product, handleAdd, handleSubtract, cartItems }) => {
   );
 };
 
+const CheckoutForm = ({ isOpen, toggleCheckoutForm }) => {
+  return (
+    <>
+    {isOpen && <div className="overlayForm"></div>}
+    <div className={`checkout-form ${isOpen ? 'open' : ''}`}>
+      <div className="header bg-dark text-white d-flex justify-content-between align-items-center px-4 py-3">
+        <h2 className="m-0">Checkout and Payment Information</h2>
+        <button type="button" className="btn btn-lg btn-outline-light" onClick={toggleCheckoutForm}>Return to Shopping</button>
+      </div>
+
+
+    </div>
+    </>
+    
+  );
+};
+
+
 const App = () => {
 
   const [filteredProducts, setFilteredProducts] = useState(productData);
   const [cartItems, setCartItems] = useState({});
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [showCheckoutForm, setShowCheckoutForm] = useState(false);
+
 
   const clearCart = () => {
     setCartItems({});
@@ -315,7 +338,7 @@ const App = () => {
     });
     return total.toFixed(2);
   };
-  
+
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
@@ -326,11 +349,23 @@ const App = () => {
     }
   };
 
-  
+
+  const toggleCheckoutForm = () => {
+    setShowCheckoutForm(!showCheckoutForm);
+    if (showCheckoutForm) {
+      document.body.classList.remove('no-scroll');
+    } else {
+      document.body.classList.add('no-scroll');
+    }
+  };
+
 
   return (
-    <div>
-      <Header onSearch={handleSearch} clearCart={clearCart} toggleSidebar={toggleSidebar} />
+    <div >
+
+      <Header onSearch={handleSearch} clearCart={clearCart} toggleSidebar={toggleSidebar} toggleCheckoutForm={toggleCheckoutForm} />
+      <hr className="hr hr-blurry bg-dark m-0" />
+      <FilterBar filterProducts={filterProducts} />
 
       <Sidebar
         isOpen={isSidebarOpen}
@@ -338,15 +373,15 @@ const App = () => {
         cartItems={cartItems}
         handleAdd={handleAdd}
         handleSubtract={handleSubtract}
-        handleDelete = {handleDelete}        
+        handleDelete={handleDelete}
         calculateTotal={calculateTotal}
+        toggleCheckoutForm={toggleCheckoutForm}
       />
 
 
-      <hr className="hr hr-blurry bg-dark m-0" />
-      <FilterBar filterProducts={filterProducts} />
+      <CheckoutForm isOpen={showCheckoutForm} toggleCheckoutForm={toggleCheckoutForm} />
 
-      <div className="container-fluid pt-4">
+      <div className="container-fluid pt-4 overflow-auto">
         <div className="row">
           {filteredProducts.map((product) => (
             <ProductCard

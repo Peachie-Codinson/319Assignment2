@@ -58,6 +58,16 @@ html {
   z-index: 1000; 
 }
 
+.overlayForm {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); 
+  z-index: 1600; 
+}
+
 .sidebar {
   position: fixed;
   top: 0;
@@ -92,3 +102,23 @@ html {
   overflow: hidden;
 }
 
+.checkout-form {
+  position: fixed;
+  top: 100vh; /* Initially hidden below the screen */
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  
+  overflow-y: auto;
+  background-color: white;
+  transition: top 0.5s ease; /* Transition for sliding effect */
+  z-index: 2000;
+}
+
+.checkout-form.open {
+  top: 0; /* Slides up from the bottom of the screen */
+}
+
+.checkout-form.close {
+  top: 100vh; /* Slides down to hide below the screen */
+}

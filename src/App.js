@@ -226,7 +226,7 @@ const Sidebar = ({
           <hr className="hr hr-blurry  bg-dark m-0 mb-3" />
           <div className="mb-3 d-flex  justify-content-center">
             <button
-              className="btn btn-primary btn-lg checkout-btn w-100 text-dark"
+              className="btn btn-primary btn-lg checkout-btn w-100 btn-outline-secondary"
               style={{ backgroundColor: "#ff9900", borderColor: "#ff9900" }}
               onClick={toggleCheckoutForm}
             >
@@ -383,7 +383,7 @@ const ProductCardBody = ({ product, handleAdd, handleSubtract, cartItems }) => {
               </div>
             ) : (
               <a
-                className="btn btn-primary btn-lg text-dark"
+                className="btn btn-primary btn-lg btn-outline-secondary"
                 onClick={handleAdd}
                 style={{
                   backgroundColor: "#ff9900",
@@ -599,20 +599,28 @@ const CheckoutForm = ({isOpen, toggleCheckoutForm, dataF, setDataF, viewer, setV
       <div className="container mt-5">
         <div>
           <h1>Shipping and payment summary:</h1>
+          
+          <hr className="hr hr-blurry bg-dark m-0 mt-3 mb-3" />
+          <div className="ms-5" > 
           <h3>{dataF.fullName}</h3>
           <p>{dataF.email}</p>
-          <p>{dataF.creditCard}</p>
+          <p>XXXX-XXXX-XXXX-{dataF.creditCard.slice(-4)}</p>
           <p>
             {dataF.address} {dataF.address2}
           </p>
           <p>
             {dataF.city}, {dataF.state} {dataF.zip}{" "}
           </p>
-          <p>Thank You!</p>
+          <h4>Thank You!</h4>
+          </div>
+          
         </div>
-        <button type="button" className="btn btn-primary" onClick={handleOrder}>
-          Return to Shopping
+        
+        <hr className="hr hr-blurry bg-dark m-0 mt-3 mb-3" />
+        <button type="button" className="btn btn-primary btn-outline-secondary btn-lg" style={{ backgroundColor: "#ff9900", borderColor: "#ff9900" }} onClick={handleOrder}>
+         Shop for more items
         </button>
+        
       </div>
     );
   }

@@ -417,111 +417,173 @@ const CheckoutForm = ({isOpen, toggleCheckoutForm, dataF, setDataF, viewer, setV
     };
 
     return (
-      <div className="container mt-5">
-        <div><ShowCart /></div> 
-        <form onSubmit={handleSubmit(onSubmit)} className="container mt-5">
-        <h3>Shipping and payment details:</h3>
-          <div className="form-group">
-            <input
-              {...register("fullName", { required: true })}
-              placeholder="Full Name"
-              className="form-control"
-            />
-            {errors.fullName && (
-              <p className="text-danger">Full Name is required.</p>
-            )}
-          </div>
+      <div className="container mt-5 col-md-8">
+        <div className="row-md-6">
 
-          <div className="form-group">
-            <input
-              {...register("email", {
-                required: true,
-                pattern: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
-              })}
-              placeholder="Email"
-              className="form-control"
-            />
-            {errors.email && (
-              <p className="text-danger">
-                Valid email is required (name@website.com).
-              </p>
-            )}
+          <h3>Your Order summary:</h3>
+          <hr className="hr hr-blurry bg-dark m-0 mb-3 mt-3" />
+          <div className="container row-md-3">
+            <ShowCart />
           </div>
-
-          <div className="form-group">
-            <input
-              {...register("creditCard", {
-                required: true,
-                pattern: /[0-9]{4}( |-)[0-9]{4}( |-)[0-9]{4}( |-)[0-9]{4}/,
-              })}
-              placeholder="Credit Card"
-              className="form-control"
-            />
-            {errors.creditCard && (
-              <p className="text-danger">
-                Valid Credit Card is required (xxxx-xxxx-xxxx-xxxx).
-              </p>
-            )}
+          <hr className="hr hr-blurry  bg-dark m-0" />
+          <div className="d-flex flex-row justify-content-between mt-3 mb-3">
+            <h3 className="card-title ">Subtotal:</h3>
+            <h3 className="card-title me-2">${calculateTotal()}</h3>
           </div>
+          <hr className="hr hr-blurry  bg-dark m-0 mb-3" />
+        </div>
 
-          <div className="form-group">
-            <input
-              {...register("address", { required: true })}
-              placeholder="Address"
-              className="form-control"
-            />
-            {errors.address && (
-              <p className="text-danger">Address is required.</p>
-            )}
-          </div>
 
-          <div className="form-group">
-            <input
-              {...register("address2")}
-              placeholder="Address 2"
-              className="form-control"
-            />
-          </div>
+        <div className="row-md-6">
 
-          <div className="form-group">
-            <input
-              {...register("city", { required: true })}
-              placeholder="City"
-              className="form-control"
-            />
-            {errors.city && <p className="text-danger">City is required.</p>}
-          </div>
+          <form onSubmit={handleSubmit(onSubmit)} className="container mt-5 ">
+            <h3>Shipping and payment details:</h3>
 
-          <div className="form-group">
-            <input
-              {...register("state", { required: true })}
-              placeholder="State"
-              className="form-control"
-              min="5"
-            />
-            {errors.state && <p className="text-danger">State is required.</p>}
-          </div>
+            <hr className="hr hr-blurry  bg-dark m-0 mb-3 mt-3" />
+            <h4>Name</h4>
+            <div className="form-group mb-2">
+              <input
+                {...register("fullName", { required: true })}
+                placeholder="Full Name"
+                className="form-control"
+              />
+              {errors.fullName && (
+                <p className="text-danger">Full Name is required.</p>
+              )}
+            </div>
 
-          <div className="form-group">
-            <input
-              {...register("zip", {
-                required: true,
-                pattern: /[0-9]{5}/,
-                maxLength: 5,
-                minLength: 5,
-              })}
-              placeholder="Zip"
-              className="form-control"
-            />
-            {errors.zip && (
-              <p className="text-danger">Valid Zip is required (5 digits).</p>
-            )}
-          </div>
+            <h4>Email</h4>
+            <div className="form-group">
+              <input
+                {...register("email", {
+                  required: true,
+                  pattern: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
+                })}
+                placeholder="Email"
+                className="form-control"
+              />
+              {errors.email && (
+                <p className="text-danger">
+                  Valid email is required (name@website.com).
+                </p>
+              )}
+            </div>
 
-          <button type="submit" className="btn btn-primary">
-            Confirm order
-          </button>
-        </form>
+            <div className="row mt-2">
+              <div className="col-md-8">
+                <h4> Card Number</h4>
+                <div className="form-group">
+                  <input
+                    {...register("creditCard", {
+                      required: true,
+                      pattern: /[0-9]{4}( |-)[0-9]{4}( |-)[0-9]{4}( |-)[0-9]{4}/,
+                    })}
+                    placeholder="Credit Card"
+                    className="form-control"
+                  />
+                  {errors.creditCard && (
+                    <p className="text-danger">
+                      Valid Credit Card is required (xxxx-xxxx-xxxx-xxxx).
+                    </p>
+                  )}
+                </div>
+              </div>
+
+
+              <div className="col-md-4">
+                <h4>CVV</h4>
+                <div className="form-group">
+                  <input
+                    {...register("cvv", {
+                      required: true,
+                      pattern: /[0-9]{3}/,
+                    })}
+                    placeholder="CVV"
+                    className="form-control"
+                  />
+                  {errors.cvv && (
+                    <p className="text-danger">
+                      Please enter a valid 3-digit CVV.
+                    </p>
+                  )}
+                </div>
+              </div>
+            </div>
+
+
+            <div className="row mt-2">
+              <h4>Address</h4>
+              <div className="form-group">
+                <input
+                  {...register("address", { required: true })}
+                  placeholder="Address"
+                  className="form-control"
+                />
+                {errors.address && (
+                  <p className="text-danger">Address is required.</p>
+                )}
+              </div>
+
+              <div className="form-group">
+                <input
+                  {...register("address2")}
+                  placeholder="Address 2"
+                  className="form-control"
+                />
+              </div>
+            </div>
+
+
+            <div className="row mt-2">
+              <div className="col-md-4">
+                <h4>City</h4>
+                <div className="form-group">
+                  <input
+                    {...register("city", { required: true })}
+                    placeholder="City"
+                    className="form-control"
+                  />
+                  {errors.city && <p className="text-danger">City is required.</p>}
+                </div>
+              </div>
+
+              <div className="col-md-4">
+                <h4>State</h4>
+                <div className="form-group">
+                  <input
+                    {...register("state", { required: true })}
+                    placeholder="State"
+                    className="form-control"
+                    min="5"
+                  />
+                  {errors.state && <p className="text-danger">State is required.</p>}
+                </div>
+              </div>
+
+              <div className="col-md-4">
+                <h4>Zip Code</h4>
+                <div className="form-group">
+                  <input
+                    {...register("zip", {
+                      required: true,
+                      pattern: /[0-9]{5}/,
+                      maxLength: 5,
+                      minLength: 5,
+                    })}
+                    placeholder="Zip"
+                    className="form-control"
+                  />
+                  {errors.zip && (
+                    <p className="text-danger">Valid Zip is required (5 digits).</p>
+                  )}
+                </div>
+              </div>
+            </div>
+            <button type="submit" className="btn btn-primary btn-outline-secondary btn-lg mt-3 mb-4" style={{ backgroundColor: "#ff9900", borderColor: "#ff9900" }}>
+              Confirm order
+            </button>
+          </form>
+        </div>
       </div>
     );
   }
@@ -581,13 +643,6 @@ const CheckoutForm = ({isOpen, toggleCheckoutForm, dataF, setDataF, viewer, setV
           })}
         </div>
 
-        <hr className="mt-auto hr hr-blurry  bg-dark m-0" />
-        <div className="d-flex flex-row justify-content-between mt-2 mb-3">
-          <h3 className="card-title ">Subtotal:</h3>
-          <h3 className="card-title me-2">${calculateTotal()}</h3>
-        </div>
-
-        <hr className="hr hr-blurry  bg-dark m-0 mb-3" />
       </div>
     );
   }

@@ -401,7 +401,7 @@ const ProductCardBody = ({ product, handleAdd, handleSubtract, cartItems }) => {
   );
 };
 
-const CheckoutForm = ({ isOpen, toggleCheckoutForm }) => {
+const CheckoutForm = ({ isOpen, toggleCheckoutForm, cartItems }) => {
   const {
     register,
     handleSubmit,
@@ -436,25 +436,31 @@ const CheckoutForm = ({ isOpen, toggleCheckoutForm }) => {
             <input
               {...register("email", {
                 required: true,
-                pattern: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
+                pattern: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
               })}
               placeholder="Email"
               className="form-control"
             />
-            {errors.email && <p className="text-danger">Valid email is required (name@website.com).</p>}
+            {errors.email && (
+              <p className="text-danger">
+                Valid email is required (name@website.com).
+              </p>
+            )}
           </div>
 
           <div className="form-group">
             <input
               {...register("creditCard", {
                 required: true,
-                pattern: /[0-9]{4}( |-)[0-9]{4}( |-)[0-9]{4}( |-)[0-9]{4}/
+                pattern: /[0-9]{4}( |-)[0-9]{4}( |-)[0-9]{4}( |-)[0-9]{4}/,
               })}
               placeholder="Credit Card"
               className="form-control"
             />
             {errors.creditCard && (
-              <p className="text-danger">Valid Credit Card is required (xxxx-xxxx-xxxx-xxxx).</p>
+              <p className="text-danger">
+                Valid Credit Card is required (xxxx-xxxx-xxxx-xxxx).
+              </p>
             )}
           </div>
 
@@ -500,8 +506,9 @@ const CheckoutForm = ({ isOpen, toggleCheckoutForm }) => {
             <input
               {...register("zip", {
                 required: true,
-                minLength: 5,
+                pattern: /[0-9]{5}/,
                 maxLength: 5,
+                minLength: 5,
               })}
               placeholder="Zip"
               className="form-control"
@@ -512,12 +519,50 @@ const CheckoutForm = ({ isOpen, toggleCheckoutForm }) => {
           </div>
 
           <button type="submit" className="btn btn-primary">
-            Submit
+            Confirm order
           </button>
         </form>
       </div>
     );
   }
+
+  function Confirmation() {
+    const updateHooks = () => {
+      setViewer(0);
+      setDataF({});
+    };
+    const handleOrder = () => {
+      setViewer(0);
+      setDataF({});
+      toggleCheckoutForm()
+    };
+
+    return (
+      <div className="container mt-5">
+        <div>
+          <h1>Payment summary:</h1>
+          <h3>{dataF.fullName}</h3>
+          <p>{dataF.email}</p>
+          <p>{dataF.creditCard}</p>
+          <p>
+            {dataF.address} {dataF.address2}
+          </p>
+          <p>
+            {dataF.city}, {dataF.state} {dataF.zip}{" "}
+          </p>
+        </div>
+        <div>{cartItems}</div>
+        <button
+          type="button"
+          className="btn btn-primary"
+          onClick={handleOrder}
+        >
+          Return to Shopping
+        </button>
+      </div>
+    );
+  }
+
   return (
     <>
       {isOpen && <div className="overlayForm"></div>}
@@ -532,7 +577,8 @@ const CheckoutForm = ({ isOpen, toggleCheckoutForm }) => {
             Return to Shopping
           </button>
         </div>
-        <Payment />
+        {viewer === 0 && <Payment />}
+        {viewer === 1 && <Confirmation />}
       </div>
     </>
   );

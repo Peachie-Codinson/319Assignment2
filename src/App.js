@@ -401,14 +401,12 @@ const ProductCardBody = ({ product, handleAdd, handleSubtract, cartItems }) => {
   );
 };
 
-const CheckoutForm = ({ isOpen, toggleCheckoutForm, clearCart }) => {
+const CheckoutForm = ({isOpen, toggleCheckoutForm, dataF, setDataF, viewer, setViewer, cartItems, handleAdd, handleSubtract, handleDelete, calculateTotal, clearCart}) => {
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
-  const [dataF, setDataF] = useState({});
-  const [viewer, setViewer] = useState(0);
 
   function Payment() {
     const onSubmit = (data) => {
@@ -420,8 +418,9 @@ const CheckoutForm = ({ isOpen, toggleCheckoutForm, clearCart }) => {
 
     return (
       <div className="container mt-5">
-        <div>{/* Show cart here? */}</div>
+        <div><ShowCart /></div> 
         <form onSubmit={handleSubmit(onSubmit)} className="container mt-5">
+        <h3>Shipping and payment details:</h3>
           <div className="form-group">
             <input
               {...register("fullName", { required: true })}
@@ -500,9 +499,7 @@ const CheckoutForm = ({ isOpen, toggleCheckoutForm, clearCart }) => {
               className="form-control"
               min="5"
             />
-            {errors.state && (
-              <p className="text-danger">State is required.</p>
-            )}
+            {errors.state && <p className="text-danger">State is required.</p>}
           </div>
 
           <div className="form-group">
@@ -538,7 +535,6 @@ const CheckoutForm = ({ isOpen, toggleCheckoutForm, clearCart }) => {
 
     return (
       <div className="container mt-5">
-        <div>{/* show ordered items here; stored in OrderedItems */}</div>
         <div>
           <h1>Shipping and payment summary:</h1>
           <h3>{dataF.fullName}</h3>
@@ -552,13 +548,46 @@ const CheckoutForm = ({ isOpen, toggleCheckoutForm, clearCart }) => {
           </p>
           <p>Thank You!</p>
         </div>
-        <button
-          type="button"
-          className="btn btn-primary"
-          onClick={handleOrder}
-        >
+        <button type="button" className="btn btn-primary" onClick={handleOrder}>
           Return to Shopping
         </button>
+      </div>
+    );
+  }
+
+  function ShowCart() {
+    return (
+      <div>
+        <div className="cart-items overflow-auto  me-1 mt-2 mb-2">
+          {Object.keys(cartItems).map((productId) => {
+            const product = productData.find(
+              (item) => item.id === parseInt(productId, 10)
+            );
+            if (product) {
+              return (
+                <CartItemCard
+                  key={productId}
+                  productId={productId}
+                  product={product}
+                  cartItems={cartItems}
+                  handleAdd={handleAdd}
+                  handleSubtract={handleSubtract}
+                  handleDelete={handleDelete}
+                />
+              );
+            } else {
+              return null;
+            }
+          })}
+        </div>
+
+        <hr className="mt-auto hr hr-blurry  bg-dark m-0" />
+        <div className="d-flex flex-row justify-content-between mt-2 mb-3">
+          <h3 className="card-title ">Subtotal:</h3>
+          <h3 className="card-title me-2">${calculateTotal()}</h3>
+        </div>
+
+        <hr className="hr hr-blurry  bg-dark m-0 mb-3" />
       </div>
     );
   }
@@ -589,6 +618,8 @@ const App = () => {
   const [cartItems, setCartItems] = useState({});
   const [showSidebar, setShowSidebar] = useState(false);
   const [showCheckoutForm, setShowCheckoutForm] = useState(false);
+  const [dataF, setDataF] = useState({});
+  const [viewer, setViewer] = useState(0);
 
   const clearCart = () => {
     setCartItems({});
@@ -697,6 +728,15 @@ const App = () => {
       <CheckoutForm
         isOpen={showCheckoutForm}
         toggleCheckoutForm={toggleCheckoutForm}
+        dataF={dataF}
+        setDataF={setDataF}
+        viewer={viewer}
+        setViewer={setViewer}
+        cartItems={cartItems}
+        handleAdd={handleAdd}
+        handleSubtract={handleSubtract}
+        handleDelete={handleDelete}
+        calculateTotal={calculateTotal}
         clearCart={clearCart}
       />
 

@@ -401,7 +401,7 @@ const ProductCardBody = ({ product, handleAdd, handleSubtract, cartItems }) => {
   );
 };
 
-const CheckoutForm = ({ isOpen, toggleCheckoutForm, cartItems }) => {
+const CheckoutForm = ({ isOpen, toggleCheckoutForm, clearCart }) => {
   const {
     register,
     handleSubmit,
@@ -409,25 +409,19 @@ const CheckoutForm = ({ isOpen, toggleCheckoutForm, cartItems }) => {
   } = useForm();
   const [dataF, setDataF] = useState({});
   const [viewer, setViewer] = useState(0);
-  const [OrderedItems, setOrderedItems] = useState({});
 
   function Payment() {
     const onSubmit = (data) => {
-      console.log(data); // log all data
-      // update hooks
-      setDataF(data);
-      // to store cart temporarily to show on confirmation page; the cart is cleared when order submitted, but still need to show items in confirmation
-      setOrderedItems(cartItems);
-      console.log(cartItems);
-      // Supposed to Clear Cart; browser is not recognizing setCartItems. 
-      // setCartItems({});
       setViewer(1);
+      console.log(data); // log all data
+      setDataF(data);
+      clearCart();
     };
 
     return (
-      <div>
+      <div className="container mt-5">
+        <div>{/* Show cart here? */}</div>
         <form onSubmit={handleSubmit(onSubmit)} className="container mt-5">
-          <div>{/* Show cart here? */}</div>
           <div className="form-group">
             <input
               {...register("fullName", { required: true })}
@@ -506,7 +500,9 @@ const CheckoutForm = ({ isOpen, toggleCheckoutForm, cartItems }) => {
               className="form-control"
               min="5"
             />
-            {errors.state && <p className="text-danger">State is required.</p>}
+            {errors.state && (
+              <p className="text-danger">State is required.</p>
+            )}
           </div>
 
           <div className="form-group">
@@ -542,11 +538,9 @@ const CheckoutForm = ({ isOpen, toggleCheckoutForm, cartItems }) => {
 
     return (
       <div className="container mt-5">
+        <div>{/* show ordered items here; stored in OrderedItems */}</div>
         <div>
-          {/* show ordered items here; stored in OrderedItems */}
-        </div>
-        <div>
-          <h1>Payment summary:</h1>
+          <h1>Shipping and payment summary:</h1>
           <h3>{dataF.fullName}</h3>
           <p>{dataF.email}</p>
           <p>{dataF.creditCard}</p>
@@ -556,9 +550,13 @@ const CheckoutForm = ({ isOpen, toggleCheckoutForm, cartItems }) => {
           <p>
             {dataF.city}, {dataF.state} {dataF.zip}{" "}
           </p>
+          <p>Thank You!</p>
         </div>
-        <div>{CartItemCard}</div>
-        <button type="button" className="btn btn-primary" onClick={handleOrder}>
+        <button
+          type="button"
+          className="btn btn-primary"
+          onClick={handleOrder}
+        >
           Return to Shopping
         </button>
       </div>
@@ -579,8 +577,8 @@ const CheckoutForm = ({ isOpen, toggleCheckoutForm, cartItems }) => {
             Return to Shopping
           </button>
         </div>
-        {viewer === 0 && <Payment />}
         {viewer === 1 && <Confirmation />}
+        {viewer === 0 && <Payment />}
       </div>
     </>
   );
@@ -699,11 +697,7 @@ const App = () => {
       <CheckoutForm
         isOpen={showCheckoutForm}
         toggleCheckoutForm={toggleCheckoutForm}
-        cartItems={cartItems}
-        handleAdd={handleAdd}
-        handleSubtract={handleSubtract}
-        handleDelete={handleDelete}
-        calculateTotal={calculateTotal}
+        clearCart={clearCart}
       />
 
       <div className="container-fluid pt-4 overflow-auto">

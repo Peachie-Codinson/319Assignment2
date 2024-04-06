@@ -122,3 +122,7 @@ html {
 .checkout-form.close {
   top: 100vh; /* Slides down to hide below the screen */
 }
+.form-group {
+  padding-top: 5px;
+  padding-bottom: 5px;
+}

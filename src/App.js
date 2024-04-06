@@ -409,18 +409,25 @@ const CheckoutForm = ({ isOpen, toggleCheckoutForm, cartItems }) => {
   } = useForm();
   const [dataF, setDataF] = useState({});
   const [viewer, setViewer] = useState(0);
+  const [OrderedItems, setOrderedItems] = useState({});
 
   function Payment() {
     const onSubmit = (data) => {
       console.log(data); // log all data
       // update hooks
       setDataF(data);
+      // to store cart temporarily to show on confirmation page; the cart is cleared when order submitted, but still need to show items in confirmation
+      setOrderedItems(cartItems);
+      console.log(cartItems);
+      // Supposed to Clear Cart; browser is not recognizing setCartItems. 
+      // setCartItems({});
       setViewer(1);
     };
 
     return (
       <div>
         <form onSubmit={handleSubmit(onSubmit)} className="container mt-5">
+          <div>{/* Show cart here? */}</div>
           <div className="form-group">
             <input
               {...register("fullName", { required: true })}
@@ -527,18 +534,17 @@ const CheckoutForm = ({ isOpen, toggleCheckoutForm, cartItems }) => {
   }
 
   function Confirmation() {
-    const updateHooks = () => {
-      setViewer(0);
-      setDataF({});
-    };
     const handleOrder = () => {
       setViewer(0);
       setDataF({});
-      toggleCheckoutForm()
+      toggleCheckoutForm();
     };
 
     return (
       <div className="container mt-5">
+        <div>
+          {/* show ordered items here; stored in OrderedItems */}
+        </div>
         <div>
           <h1>Payment summary:</h1>
           <h3>{dataF.fullName}</h3>
@@ -551,12 +557,8 @@ const CheckoutForm = ({ isOpen, toggleCheckoutForm, cartItems }) => {
             {dataF.city}, {dataF.state} {dataF.zip}{" "}
           </p>
         </div>
-        <div>{cartItems}</div>
-        <button
-          type="button"
-          className="btn btn-primary"
-          onClick={handleOrder}
-        >
+        <div>{CartItemCard}</div>
+        <button type="button" className="btn btn-primary" onClick={handleOrder}>
           Return to Shopping
         </button>
       </div>
@@ -697,6 +699,11 @@ const App = () => {
       <CheckoutForm
         isOpen={showCheckoutForm}
         toggleCheckoutForm={toggleCheckoutForm}
+        cartItems={cartItems}
+        handleAdd={handleAdd}
+        handleSubtract={handleSubtract}
+        handleDelete={handleDelete}
+        calculateTotal={calculateTotal}
       />
 
       <div className="container-fluid pt-4 overflow-auto">

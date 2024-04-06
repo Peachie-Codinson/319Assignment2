@@ -434,21 +434,27 @@ const CheckoutForm = ({ isOpen, toggleCheckoutForm }) => {
 
           <div className="form-group">
             <input
-              {...register("email", { required: true, pattern: /^\S+@\S+$/i })}
+              {...register("email", {
+                required: true,
+                pattern: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
+              })}
               placeholder="Email"
               className="form-control"
             />
-            {errors.email && <p className="text-danger">Email is required.</p>}
+            {errors.email && <p className="text-danger">Valid email is required (name@website.com).</p>}
           </div>
 
           <div className="form-group">
             <input
-              {...register("creditCard", { required: true })}
+              {...register("creditCard", {
+                required: true,
+                pattern: /[0-9]{4}( |-)[0-9]{4}( |-)[0-9]{4}( |-)[0-9]{4}/
+              })}
               placeholder="Credit Card"
               className="form-control"
             />
             {errors.creditCard && (
-              <p className="text-danger">Credit Card is required.</p>
+              <p className="text-danger">Valid Credit Card is required (xxxx-xxxx-xxxx-xxxx).</p>
             )}
           </div>
 
@@ -487,16 +493,22 @@ const CheckoutForm = ({ isOpen, toggleCheckoutForm }) => {
               className="form-control"
               min="5"
             />
-            {errors.state && <p>State is required.</p>}
+            {errors.state && <p className="text-danger">State is required.</p>}
           </div>
 
           <div className="form-group">
             <input
-              {...register("zip", { required: true })}
+              {...register("zip", {
+                required: true,
+                minLength: 5,
+                maxLength: 5,
+              })}
               placeholder="Zip"
               className="form-control"
             />
-            {errors.zip && <p className="text-danger">Zip is required.</p>}
+            {errors.zip && (
+              <p className="text-danger">Valid Zip is required (5 digits).</p>
+            )}
           </div>
 
           <button type="submit" className="btn btn-primary">

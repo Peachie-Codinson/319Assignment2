@@ -1,17 +1,17 @@
 {
   "files": {
-    "main.css": "/react-gh-pages/static/css/main.d092724b.css",
-    "main.js": "/react-gh-pages/static/js/main.4e31ffaf.js",
-    "static/js/453.0917d3d6.chunk.js": "/react-gh-pages/static/js/453.0917d3d6.chunk.js",
-    "static/media/bootstrap-icons.woff?": "/react-gh-pages/static/media/bootstrap-icons.39795c0b4513de014cf8.woff",
-    "static/media/bootstrap-icons.woff2?": "/react-gh-pages/static/media/bootstrap-icons.b7bcc075b395c14ce8c2.woff2",
-    "index.html": "/react-gh-pages/index.html",
-    "main.d092724b.css.map": "/react-gh-pages/static/css/main.d092724b.css.map",
-    "main.4e31ffaf.js.map": "/react-gh-pages/static/js/main.4e31ffaf.js.map",
-    "453.0917d3d6.chunk.js.map": "/react-gh-pages/static/js/453.0917d3d6.chunk.js.map"
+    "main.css": "/319Assignment2/static/css/main.ae7c78e5.css",
+    "main.js": "/319Assignment2/static/js/main.eec1382d.js",
+    "static/js/453.0917d3d6.chunk.js": "/319Assignment2/static/js/453.0917d3d6.chunk.js",
+    "static/media/bootstrap-icons.woff?": "/319Assignment2/static/media/bootstrap-icons.39795c0b4513de014cf8.woff",
+    "static/media/bootstrap-icons.woff2?": "/319Assignment2/static/media/bootstrap-icons.b7bcc075b395c14ce8c2.woff2",
+    "index.html": "/319Assignment2/index.html",
+    "main.ae7c78e5.css.map": "/319Assignment2/static/css/main.ae7c78e5.css.map",
+    "main.eec1382d.js.map": "/319Assignment2/static/js/main.eec1382d.js.map",
+    "453.0917d3d6.chunk.js.map": "/319Assignment2/static/js/453.0917d3d6.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.d092724b.css",
-    "static/js/main.4e31ffaf.js"
+    "static/css/main.ae7c78e5.css",
+    "static/js/main.eec1382d.js"
   ]
 }

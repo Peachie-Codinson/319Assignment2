@@ -496,7 +496,7 @@ const CheckoutForm = ({isOpen, toggleCheckoutForm, dataF, setDataF, viewer, setV
                   <input
                     {...register("cvv", {
                       required: true,
-                      pattern: /[0-9]{3}/,
+                      pattern: /[0-9]{3}/, maxLength: 3,
                     })}
                     placeholder="CVV"
                     className="form-control"
